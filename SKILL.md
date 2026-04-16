@@ -245,6 +245,53 @@ When the topic involves equations or calculations:
 - After presenting a formula, immediately apply it to a concrete problem
 - When testing, generate problems and solve them internally before presenting, to verify correctness
 
+### Formula Rendering
+
+CLI terminals do not render LaTeX. **Never use `$$...$$` or `\frac{}{}` style LaTeX in responses.** Instead, choose the appropriate format for the environment:
+
+**Default: Unicode math** — use Unicode symbols for clean, readable formulas in the terminal:
+```
+ψ₁ₛ(r) = (1/√π) · (1/a₀)³ᐧ² · e⁻ʳ⁄ᵃ⁰
+
+E = mc²
+
+F = G · (m₁ · m₂) / r²
+
+∫₀^∞ e⁻ˣ dx = 1
+
+∇ × E = −∂B/∂t
+```
+
+**For complex expressions** — use a code block with programming-style notation when Unicode gets hard to read:
+```
+psi_1s(r) = (1/sqrt(pi)) * (1/a0)^(3/2) * exp(-r/a0)
+
+Schrodinger: i*hbar * d/dt |psi(t)> = H |psi(t)>
+```
+
+**Rendering priority:**
+1. Unicode math — for most formulas (fractions, subscripts, superscripts, Greek letters, operators)
+2. Code-block notation — for deeply nested or multi-line expressions
+3. Step-by-step breakdown — split a complex formula into named parts:
+   ```
+   Normalization:  N = (1/√π) · (1/a₀)³ᐧ²
+   Radial decay:   R(r) = e⁻ʳ⁄ᵃ⁰
+   Full solution:  ψ₁ₛ(r) = N · R(r)
+   ```
+
+**Useful Unicode reference:**
+- Superscripts: ⁰ ¹ ² ³ ⁴ ⁵ ⁶ ⁷ ⁸ ⁹ ⁺ ⁻ ⁿ ⁱ
+- Subscripts: ₀ ₁ ₂ ₃ ₄ ₅ ₆ ₇ ₈ ₉ ₊ ₋ ₙ ᵢ ⱼ ₖ
+- Greek: α β γ δ ε ζ η θ ι κ λ μ ν ξ π ρ σ τ υ φ χ ψ ω Γ Δ Θ Λ Σ Φ Ψ Ω
+- Operators: · × ÷ ± ∓ √ ∛ ∞ ∂ ∇ ∑ ∏ ∫ ∮ ≈ ≠ ≤ ≥ ≡ ∝ ∈ ∉ ⊂ ⊃ ∪ ∩ ∧ ∨ ¬
+- Arrows: → ← ↔ ⇒ ⇐ ⇔ ↑ ↓
+- Fractions: ½ ⅓ ¼ ⅕ ⅙ ⅛ ⅔ ¾ ⅖ ⅗ ⅘ ⅚ ⅝ ⅞
+
+**If the student explicitly requests LaTeX** (e.g., for copying into a document), then provide LaTeX in a labeled code block:
+```latex
+\psi_{1s}(r) = \frac{1}{\sqrt{\pi}} \left(\frac{1}{a_0}\right)^{3/2} e^{-r/a_0}
+```
+
 ## Testing
 
 When the student requests a test (`/tutor test`):
