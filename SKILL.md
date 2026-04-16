@@ -402,6 +402,22 @@ On first use, or when no `_index.md` exists in tutor home:
    ```
 5. Confirm: "Learning journal initialized at {path}. Ready to start."
 
+### Write-Early, Write-Often
+
+The student can exit at any time (ctrl+C, close terminal, network drop). The tutor must **never rely on a graceful shutdown** to persist progress. Write to disk at every state change:
+
+| Event | Write immediately |
+|-------|-------------------|
+| `/tutor plan` generates curriculum | Save `curriculum/{topic}.md`, update `_index.md` with new course |
+| `/tutor config` changes profile | Save `_profile.md` |
+| `/tutor start` begins a section | Update `_index.md` current section pointer |
+| Lesson section completes | Digest to `journal/`, update `progress/{topic}.md`, update `_index.md` |
+| Test completes | Save scores to `progress/{topic}.md` |
+| `/tutor note` | Append to `notes/{topic}.md` |
+| Student answers a check question | Update `progress/{topic}.md` confidence marker for current section |
+
+**Rule:** After any write, `_index.md` must reflect the true current state — which course is active, which section was last started, and overall completion. This is the single source of truth for resume.
+
 ### Memory Operations
 
 #### digest — Capture Learning Progress
@@ -557,21 +573,31 @@ The memory system is designed to prevent context exhaustion in long sessions:
 
 ## Session Lifecycle
 
-### Starting a New Session
+### Starting a New Session (Resume)
 
 When the tutor is activated for the first time or in a new conversation:
 
 1. Check if `{tutor-home}/_index.md` exists
-   - **Yes:** Read profile and index, welcome the student back, show where they left off
    - **No:** Initialize the learning journal, show default configuration, invite the student to configure or start planning
+   - **Yes — resume flow:**
+     1. Read `_index.md` → determine active course and last section
+     2. Read `_profile.md` → restore student configuration
+     3. Read `progress/{topic}.md` → load completion status and confidence markers
+     4. Read `curriculum/{topic}.md` → load the full curriculum structure
+     5. Optionally read latest `journal/{topic}/` entry for context on where the student left off
 2. Display a concise welcome:
    ```
-   Welcome back! You're currently working on:
+   Welcome back! You were working on:
      📚 {Topic} — Section {N.M} ({progress}%)
-     ⚠️ {topics needing revisit}
+     📝 Last session: {brief summary from journal}
+     ⚠️ Topics needing revisit: {shaky/revisit items}
 
-   Continue with `/tutor continue`, or start something new with `/tutor plan <topic>`.
+   Say `/tutor continue` to pick up where you left off,
+   `/tutor start {N.M}` to jump to a section,
+   or `/tutor plan <topic>` to start something new.
    ```
+
+**Resume is automatic.** The student does not need to re-configure or re-plan. Everything is restored from disk. If the previous session ended abruptly (mid-lesson), resume from the beginning of that section — any partial conversation is lost, but the section itself is re-taught.
 
 ### During a Session
 
@@ -586,11 +612,16 @@ Plan → Prerequisite Check → Teach → Practice → Test → Digest → Next
 
 ### Ending a Session
 
-When the student says goodbye, wants to stop, or the conversation ends:
+**Graceful exit** — when the student says goodbye or wants to stop:
 1. Digest any pending learning observations
 2. Update progress files
 3. Log session summary to `_log.md`
 4. Suggest what to study next time
+
+**Abrupt exit** — if the student closes the terminal or connection drops:
+- No data loss risk — all state changes were already written to disk incrementally (see Write-Early, Write-Often)
+- On next session start, the tutor resumes from the last completed section
+- At most, the current in-progress lesson is re-taught from the beginning
 
 ## Adaptive Behavior
 
