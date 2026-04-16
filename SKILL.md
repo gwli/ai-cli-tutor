@@ -1,6 +1,6 @@
 ---
 name: tutor
-description: AI Tutor — personalized teaching for any subject with adaptive pedagogy, structured curriculum, graduated testing, and persistent learning memory. Triggers on "tutor", "/tutor:", "teach me", "learn about", "study", "lesson", "curriculum".
+description: AI Tutor — personalized teaching for any subject with adaptive pedagogy, structured curriculum, graduated testing, and persistent learning memory. Triggers on "tutor", "/tutor", "teach me", "learn about", "study", "lesson", "curriculum".
 ---
 
 # AI Tutor — Adaptive Learning Through Conversation
@@ -59,31 +59,31 @@ Your learning profile:
 
 ## Commands
 
-All commands use the `/tutor:` prefix to avoid collision with other tools. Natural language always works as an alternative.
+The skill is invoked via `/tutor` with a subcommand as argument. Natural language always works as an alternative.
 
 | Command | Description |
 |---------|-------------|
-| `/tutor:config [description]` | View or update learning profile. Accepts options or natural language self-description |
-| `/tutor:plan <topic>` | Generate a curriculum (prerequisites + main topics) |
-| `/tutor:start [section]` | Begin the first lesson, or jump to a specific section (e.g., `1.3`) |
-| `/tutor:continue` | Continue to the next lesson section |
-| `/tutor:test` | Test knowledge on current topic with graduated difficulty |
-| `/tutor:note [text]` | Save a learning note, bookmark, or question for later |
-| `/tutor:review` | Review progress, notes, and areas needing revisit |
-| `/tutor:query <question>` | Search your learning history and journal |
-| `/tutor:status` | Show current course progress overview |
+| `/tutor config [description]` | View or update learning profile. Accepts options or natural language self-description |
+| `/tutor plan <topic>` | Generate a curriculum (prerequisites + main topics) |
+| `/tutor start [section]` | Begin the first lesson, or jump to a specific section (e.g., `1.3`) |
+| `/tutor continue` | Continue to the next lesson section |
+| `/tutor test` | Test knowledge on current topic with graduated difficulty |
+| `/tutor note [text]` | Save a learning note, bookmark, or question for later |
+| `/tutor review` | Review progress, notes, and areas needing revisit |
+| `/tutor query <question>` | Search your learning history and journal |
+| `/tutor status` | Show current course progress overview |
 
 **Natural language equivalents** — the tutor recognizes intent from context:
-- "teach me about X" → `/tutor:plan X`
-- "next" / "go on" → `/tutor:continue`
-- "test me" / "quiz me" → `/tutor:test`
-- "remember this" / "note that" → `/tutor:note`
-- "how am I doing?" → `/tutor:status`
-- "what did we cover?" → `/tutor:review`
+- "teach me about X" → `/tutor plan X`
+- "next" / "go on" → `/tutor continue`
+- "test me" / "quiz me" → `/tutor test`
+- "remember this" / "note that" → `/tutor note`
+- "how am I doing?" → `/tutor status`
+- "what did we cover?" → `/tutor review`
 
 ## Curriculum Generation
 
-When the student requests a plan (`/tutor:plan <topic>` or "teach me X"):
+When the student requests a plan (`/tutor plan <topic>` or "teach me X"):
 
 1. Consider the student's depth level — what would a student at this level already know? What should they learn?
 2. If the topic involves math or code, identify all equations/concepts/patterns that must be covered
@@ -135,11 +135,11 @@ When the student requests a plan (`/tutor:plan <topic>` or "teach me X"):
 ```
 
 After generating the curriculum, tell the student:
-> "Say `/tutor:start` to begin, or `/tutor:start 1.3` to jump to a specific section."
+> "Say `/tutor start` to begin, or `/tutor start 1.3` to jump to a specific section."
 
 ## Lesson Delivery
 
-When teaching a lesson (`/tutor:start` or `/tutor:continue`):
+When teaching a lesson (`/tutor start` or `/tutor continue`):
 
 ### Teaching Flow
 
@@ -154,7 +154,7 @@ When teaching a lesson (`/tutor:start` or `/tutor:continue`):
 4. **Provide examples** — at least one worked example for every concept
 5. **Check understanding** — ask the student a question, then **stop and wait for their response**
 6. **Adapt** — if the student struggles, simplify or try a different angle. If they get it quickly, go deeper.
-7. **Conclude** — summarize key takeaway, suggest next action (`/tutor:continue`, `/tutor:test`)
+7. **Conclude** — summarize key takeaway, suggest next action (`/tutor continue`, `/tutor test`)
 
 ### Lesson Format
 
@@ -247,7 +247,7 @@ When the topic involves equations or calculations:
 
 ## Testing
 
-When the student requests a test (`/tutor:test`):
+When the student requests a test (`/tutor test`):
 
 ### Test Flow
 
@@ -313,7 +313,7 @@ The tutor maintains a persistent learning journal — a markdown-based knowledge
 ### Tutor Home
 
 The learning journal directory is resolved in order:
-1. User specifies explicitly: `/tutor:config home ~/my-learning`
+1. User specifies explicitly: `/tutor config home ~/my-learning`
 2. Environment variable: `TUTOR_HOME`
 3. Default: `.tutor/` in the current working directory
 
@@ -344,7 +344,7 @@ On first use, or when no `_index.md` exists in tutor home:
    ```markdown
    # Learning Index
 
-   _(No courses yet. Use `/tutor:plan <topic>` to start learning.)_
+   _(No courses yet. Use `/tutor plan <topic>` to start learning.)_
    ```
 3. Write initial `_profile.md` with default configuration
 4. Write initial `_log.md`:
@@ -359,7 +359,7 @@ On first use, or when no `_index.md` exists in tutor home:
 
 #### digest — Capture Learning Progress
 
-Triggered automatically at the end of each lesson and test, or explicitly via `/tutor:note`.
+Triggered automatically at the end of each lesson and test, or explicitly via `/tutor note`.
 
 What to capture:
 - **What the student understood** — key concepts they demonstrated mastery of
@@ -407,7 +407,7 @@ Long learning sessions can exhaust the context window. The tutor manages this pr
 
 #### review — Surface Progress and Weak Areas
 
-When the student says `/tutor:review` or starts a new session:
+When the student says `/tutor review` or starts a new session:
 
 1. Read `_index.md` and `progress/` files
 2. Present:
@@ -420,7 +420,7 @@ When the student says `/tutor:review` or starts a new session:
 
 #### query — Search Learning History
 
-When the student asks `/tutor:query <question>`:
+When the student asks `/tutor query <question>`:
 
 1. Read `_index.md` for an overview
 2. Search journal and notes files by keyword
@@ -429,7 +429,7 @@ When the student asks `/tutor:query <question>`:
 
 #### note — Student Bookmarks
 
-When the student says `/tutor:note <text>` or "remember this":
+When the student says `/tutor note <text>` or "remember this":
 
 1. Save to `notes/{current-topic}.md` (append)
 2. Format:
@@ -523,7 +523,7 @@ When the tutor is activated for the first time or in a new conversation:
      📚 {Topic} — Section {N.M} ({progress}%)
      ⚠️ {topics needing revisit}
 
-   Continue with `/tutor:continue`, or start something new with `/tutor:plan <topic>`.
+   Continue with `/tutor continue`, or start something new with `/tutor plan <topic>`.
    ```
 
 ### During a Session

@@ -46,7 +46,7 @@ cp SKILL.md ~/.config/agents/skills/tutor/SKILL.md
 ### 2. Configure (optional)
 
 ```
-> /tutor:config I'm a grad student who likes hands-on examples
+> /tutor config I'm a grad student who likes hands-on examples
 ```
 
 Or describe yourself naturally — the tutor auto-configures.
@@ -54,7 +54,7 @@ Or describe yourself naturally — the tutor auto-configures.
 ### 3. Start learning
 
 ```
-> /tutor:plan quantum computing
+> /tutor plan quantum computing
 
 # Prerequisite: Quantum Computing
 0.1 Classical Bits — binary states, logic gates
@@ -66,36 +66,36 @@ Or describe yourself naturally — the tutor auto-configures.
 1.2 Quantum Gates — Hadamard, CNOT, phase gates
 ...
 
-Say /tutor:start to begin.
+Say /tutor start to begin.
 
-> /tutor:start
+> /tutor start
 ```
 
 ### 4. Learn interactively
 
 ```
-> /tutor:continue          # next lesson
-> /tutor:test              # quiz yourself
-> /tutor:note this is key  # bookmark something
-> /tutor:review            # see your progress
+> /tutor continue          # next lesson
+> /tutor test              # quiz yourself
+> /tutor note this is key  # bookmark something
+> /tutor review            # see your progress
 > why does this work?      # ask anything, anytime
 ```
 
 ## Commands
 
-All commands use `/tutor:` prefix to avoid collision with other CLI tools.
+All commands use `/tutor ` prefix to avoid collision with other CLI tools.
 
 | Command | What It Does |
 |---------|-------------|
-| `/tutor:config` | View or update your learning profile |
-| `/tutor:plan <topic>` | Generate a curriculum |
-| `/tutor:start [section]` | Begin lessons (optionally jump to a section) |
-| `/tutor:continue` | Next lesson |
-| `/tutor:test` | Graduated difficulty test |
-| `/tutor:note [text]` | Save a note or bookmark |
-| `/tutor:review` | Review progress and weak areas |
-| `/tutor:query <question>` | Search your learning history |
-| `/tutor:status` | Current progress overview |
+| `/tutor config` | View or update your learning profile |
+| `/tutor plan <topic>` | Generate a curriculum |
+| `/tutor start [section]` | Begin lessons (optionally jump to a section) |
+| `/tutor continue` | Next lesson |
+| `/tutor test` | Graduated difficulty test |
+| `/tutor note [text]` | Save a note or bookmark |
+| `/tutor review` | Review progress and weak areas |
+| `/tutor query <question>` | Search your learning history |
+| `/tutor status` | Current progress overview |
 
 Natural language always works too — "teach me X", "test me", "next", etc.
 
